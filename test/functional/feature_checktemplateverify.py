@@ -42,12 +42,16 @@ import random
 from io import BytesIO
 from test_framework.address import script_to_p2sh
 
-CHECKTEMPLATEVERIFY_ERROR = "mandatory-script-verify-flag-failed (Script failed an OP_CHECKTEMPLATEVERIFY operation)"
+CHECKTEMPLATEVERIFY_ERROR = "block-script-verify-flag-failed (Script failed an OP_CHECKTEMPLATEVERIFY operation)"
+CHECKTEMPLATEVERIFY_MEMPOOL_ERROR = "mempool-script-verify-flag-failed (Script failed an OP_CHECKTEMPLATEVERIFY operation)"
 DISCOURAGED_ERROR = (
-    "non-mandatory-script-verify-flag (NOPx reserved for soft-fork upgrades)"
+    "mempool-script-verify-flag-failed (NOPx reserved for soft-fork upgrades)"
 )
 STACK_TOO_SHORT_ERROR = (
-    "mandatory-script-verify-flag-failed (Operation not valid with the current stack size)"
+    "mempool-script-verify-flag-failed (Operation not valid with the current stack size)"
+)
+STACK_TOO_SHORT_BLOCK_ERROR = (
+    "block-script-verify-flag-failed (Operation not valid with the current stack size)"
 )
 
 
@@ -145,7 +149,7 @@ class CheckTemplateVerifyTest(BitcoinTestFramework):
         add_witness_commitment(block)
         block.hashMerkleRoot = block.calc_merkle_root()
         block.solve()
-        return block.serialize(True).hex(), block.hash
+        return block.serialize(True).hex(), block.hash_hex
 
     def add_block(self, txs):
         block, h = self.get_block(txs)
@@ -547,7 +551,7 @@ class CheckTemplateVerifyTest(BitcoinTestFramework):
         )
 
         # Now we verify that a block with this transaction is invalid
-        self.fail_block([check_template_verify_tx_empty_stack], STACK_TOO_SHORT_ERROR)
+        self.fail_block([check_template_verify_tx_empty_stack], STACK_TOO_SHORT_BLOCK_ERROR)
         self.log.info(
             "Segwit OP_CHECKTEMPLATEVERIFY with wrong size stack spend rejected from block"
         )
@@ -635,7 +639,7 @@ class CheckTemplateVerifyTest(BitcoinTestFramework):
 
         assert_raises_rpc_error(
             -26,
-            CHECKTEMPLATEVERIFY_ERROR,
+            CHECKTEMPLATEVERIFY_MEMPOOL_ERROR,
             self.nodes[0].sendrawtransaction,
             p2sh_check_template_verify_tx.serialize().hex(),
         )
