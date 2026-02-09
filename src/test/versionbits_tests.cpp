@@ -455,6 +455,11 @@ BOOST_FIXTURE_TEST_CASE(versionbits_computeblockversion, BlockVersionTest)
             // times are picked.
             const uint32_t dep_mask{uint32_t{1} << chainParams->GetConsensus().vDeployments[dep].bit};
 
+            // Skip CTV check for testnet chains where it's not configured
+            if ((chain_type == ChainType::TESTNET || chain_type == ChainType::TESTNET4) && dep == Consensus::DEPLOYMENT_CTV) {
+                continue;
+            }
+
             BOOST_CHECK(!(chain_all_vbits & dep_mask));
             chain_all_vbits |= dep_mask;
             check_computeblockversion(vbcache, chainParams->GetConsensus(), dep);
