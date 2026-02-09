@@ -122,7 +122,7 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_CTV].bit = 5;
         consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nStartTime = 1774809000; // 30 March 2026
         consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nTimeout = 1806345000; // 30 March 2027
-        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].min_activation_height = 1000000; // 30 April 2027
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].min_activation_height = 1001952; // Approximately May 2027
         consensus.vDeployments[Consensus::DEPLOYMENT_CTV].threshold = 1815; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_CTV].period = 2016;
 
