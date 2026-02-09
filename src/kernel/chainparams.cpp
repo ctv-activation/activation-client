@@ -118,6 +118,14 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1815; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
 
+        // Deployment of CTV (BIP-119)
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].bit = 5;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nStartTime = 1774809000; // 30 March 2026
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nTimeout = 1806345000; // 30 March 2027
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].min_activation_height = 1000000; // 30 April 2027
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].threshold = 1815; // 90%
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].period = 2016;
+
         consensus.nMinimumChainWork = uint256{"0000000000000000000000000000000000000000dee8e2a309ad8a9820433c68"};
         consensus.defaultAssumeValid = uint256{"00000000000000000000611fd22f2df7c8fbd0688745c3a6c3bb5109cc2a12cb"}; // 912683
 
@@ -471,6 +479,12 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].min_activation_height = 0; // No activation delay
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].threshold = 1815; // 90%
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].period = 2016;
+
+        // Activation of CTV (BIP-119)
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].bit = 5;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
+        consensus.vDeployments[Consensus::DEPLOYMENT_CTV].min_activation_height = 0; // No activation delay
 
         // message start is defined as the first 4 bytes of the sha256d of the block script
         HashWriter h{};
